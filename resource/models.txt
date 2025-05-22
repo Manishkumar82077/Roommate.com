@@ -1,0 +1,115 @@
+====================================================
+            FLATMATE FINDER SYSTEM MODELS
+====================================================
+
+1. USER PROFILE
+----------------
+- Stores extended user information and preferences
+- Fields:
+  • id: Unique user identifier (system-generated)
+  • name: Full name of user (string, required)
+  • email: Verified email address (string, unique)
+  • mobile: Contact number (string, encrypted)
+  • age: User age in years (number, optional)
+  • about: Personal description/bio (text)
+  • designation: Occupation/profession (string)
+  • created_at: Account creation timestamp
+
+2. FLAT LISTING
+----------------
+- Manages property details posted by users
+- Fields:
+  • id: Unique property ID (system-generated)
+  • owner_id: Reference to User model
+  • location: Full address/area name (string)
+  • area: Size in square meters (number ≥10)
+  • size: [1BHK|2BHK|Single Room|1RK|Custom]
+  • rent: Monthly cost (number ≥0)
+  • description: Property details (text)
+  • is_available: Listing status (boolean)
+  • latitude: Map coordinate (-90 to 90)
+  • longitude: Map coordinate (-180 to 180)
+  • created_at: Listing creation date
+
+3. FLAT IMAGES
+--------------
+- Stores property visual references
+- Fields:
+  • id: Unique image ID (system-generated)
+  • flat_id: Reference to parent Flat
+  • image_url: Cloud storage path/URL
+  • upload_date: Image submission timestamp
+
+4. USER REQUIREMENTS
+---------------------
+- Records user's flat search preferences
+- Fields:
+  • id: Unique requirements ID
+  • user_id: Reference to User model
+  • preferred_location: Desired area (string)
+  • min_budget: Minimum rent (number)
+  • max_budget: Maximum rent (number)
+  • required_size: [Same as Flat.size options]
+  • additional_notes: Custom preferences (text)
+
+5. CONNECTION SYSTEM
+--------------------
+- Manages user interaction requests
+- Fields:
+  • id: Unique request ID
+  • sender_id: Request initiator (User)
+  • receiver_id: Request target (User)
+  • flat_id: Related property (Flat)
+  • message: Custom text (≤500 chars)
+  • status: [Pending|Accepted|Rejected]
+  • created_at: Request timestamp
+
+6. CHAT SYSTEM
+--------------
+- Handles private communication between users
+
+6a. CHAT ROOM
+- Fields:
+  • id: Unique chat ID
+  • user1_id: First participant (User)
+  • user2_id: Second participant (User)
+  • flat_id: Context property (Flat)
+  • created_at: Chat initiation time
+
+6b. MESSAGE
+- Fields:
+  • id: Unique message ID
+  • chat_id: Parent Chat Room
+  • sender_id: Author (User)
+  • content: Message text (≤2000 chars)
+  • is_read: Read status (boolean)
+  • timestamp: Exact send time
+
+7. AMENITIES
+------------
+- Tracks property facilities/features
+- Fields:
+  • id: Unique amenity ID
+  • name: [WiFi|Parking|AC|Furnished|Lift|Security...]
+
+KEY RELATIONSHIPS
+------------------
+1. One User can create → Many Flat Listings
+2. One Flat can have → Many Images
+3. One User can have → One Requirements Profile
+4. Users can send → Multiple Connection Requests
+5. One Chat Room contains → Many Messages
+
+SECURITY & PRIVACY
+-------------------
+- Encrypted mobile number storage
+- Contact details only visible after connection acceptance
+- Private messaging requires mutual consent
+- Report/block system for inappropriate content
+
+NOTES
+------
+• All models include automatic timestamps
+• String fields have appropriate length limits
+• Number fields have validation constraints
+• Status fields use predefined option lists
